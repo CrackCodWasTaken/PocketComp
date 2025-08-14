@@ -25,14 +25,16 @@ KEYS = [
 
 Fn_keys = [
     ["q", "e", "r", "t"],
-    ["f", "g", "h", "j"],
-    ["z", "x", "c", "v"]
+    ["y", "u", "i", "o"],
+    ["p", "f", "g", "h"],
+    ["j", "k", "l", "z"]
 ]
 
-Fn_ctrl = [
-    ["y", "u", "i", "o"],
-    ["k", "l", "'", "|"],
-    ["b", "n", "m", "KEY_ALT"]
+Ctrl_keys = [
+    ["x", "c", "v", "b"],
+    ["n", "m", "1", "2"],
+    ["3", "4", "|", "'"],
+    ["/", "(", ")", "-"]
 ]
 
 
@@ -58,13 +60,17 @@ ui = UInput()
 
 def send_key(row_idx, col_idx):
     global shift, ctrl, fn
-
-    if fn and ctrl:
-        key_name = Fn_ctrl[row_idx][col_idx]
-    elif fn:
-        key_name = Fn_keys[row_idx][col_idx]
+    if row_idx == 3:
+         key_name = KEYS[row_idx][col_idx]
     else:
-        key_name = KEYS[row_idx][col_idx]
+         if fn and ctrl:
+              key_name = Ctrl_keys[row_idx][col_idx]
+              print("using Fn+Ctrl")
+         elif fn:
+              key_name = Fn_keys[row_idx][col_idx]
+              print("using Fn")
+         else:
+              key_name = KEYS[row_idx][col_idx]
     # Modifier keys toggle state
     if key_name == 'SHIFT':
         shift = not shift
@@ -111,4 +117,4 @@ try:
 except KeyboardInterrupt:
     ui.close()
     for p in ROWS + COLS:
-        gpio.unexport(p)
+        gpio.unexport(p) # makes it so that you wont get errors if you restart this
